@@ -1,5 +1,26 @@
 <div>
-  <div *ngFor="let card of cards$ | async">
-    {{ card.frontWordId }} -> {{ card.backWordId }}
+  <div *ngFor="let card of cardViewModels">
+    {{ card.frontWord.text }} -> {{ card.backWord.text }}
   </div>
+
+  <form [connect]="['cards', 'form']">
+    <label for="frontWord">
+      Front word:
+      <input name="frontWord"
+             type="text"
+             ngControl
+             ngModel />
+    </label>
+
+    <label for="backWord">
+      Back word:
+      <input name="backWord"
+             type="text"
+             ngControl
+             ngModel />
+    </label>
+
+    <button (click)="addCard()">Add</button>
+
+  </form>
 </div>

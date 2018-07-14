@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 
-import { NgRedux, select } from '@angular-redux/store';
-import { IAppState, IWord } from '../store/model';
+import { select } from '@angular-redux/store';
 import { Observable } from 'rxjs';
+
+import { IWord } from './words.model';
 
 @Component({
   selector: 'glang-words',
@@ -10,7 +11,7 @@ import { Observable } from 'rxjs';
   styleUrls: ['./words.component.css']
 })
 export class WordsComponent implements OnInit {
-  @select() readonly words$: Observable<IWord[]>;
+  @select(['words', 'words']) readonly words$: Observable<IWord[]>;
 
   constructor() { }
 
