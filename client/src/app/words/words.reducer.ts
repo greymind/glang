@@ -29,23 +29,59 @@ const InitialState: IWords = {
   lastWordId: 1,
 };
 
+function determineGender(text: string): Gender {
+  const isFemale = R.endsWith('a', text);
+  const isNeutral = R.endsWith('o', text) || R.endsWith('e', text);
+
+  const gender = isFemale
+    ? Gender.Female
+    : isNeutral
+      ? Gender.Neutral
+      : Gender.Male;
+
+  return gender;
+}
+
 export function wordsReducer(state: IWords = InitialState, action: WordsAction): IWords {
   switch (action.type) {
     case WordsActions.AddWord:
+      const newWord = action.payload.word;
+
+      const duplicateWord = state.list.find(w => {
+        return w.languageCode === newWord.languageCode
+          && w.text === newWord.text;
+      });
+
+      if (!R.isNil(duplicateWord)) {
+        console.warn('Word already exists!');
+        return {
+          ...state,
+          mostRecentWordId: duplicateWord.id
+        };
+      }
+
+      const newLastWordId = state.lastWordId + 1;
+      newWord.id = newLastWordId;
+
+      if (newWord.languageCode === LanguageCode.Croatian
+        && R.isNil(newWord.gender)) {
+        newWord.gender = determineGender(newWord.text);
+      }
+
       return {
         ...state,
         form: {
           word: {
             text: '',
             languageCode: state.form.word.languageCode
-          },
-          autoGender: false
+          }
         },
         list: [
           ...state.list,
-          { ...action.payload.word, id: state.lastWordId + 1 }
+          newWord
         ],
-        lastWordId: state.lastWordId + 1
+        lastWordId: newLastWordId,
+        mostRecentWordId: newLastWordId
       };
     case FORM_CHANGED:
       const payload = action.payload as any;
@@ -61,16 +97,7 @@ export function wordsReducer(state: IWords = InitialState, action: WordsAction):
         && word.languageCode === LanguageCode.Croatian
         && (R.isNil(word.gender) || autoGender)) {
         const text = word.text;
-
-        console.log(word, didUserChangeGender);
-
-        const isFemale = R.endsWith('a', text);
-        const isNeutral = R.endsWith('o', text) || R.endsWith('e', text);
-        const gender = isFemale
-          ? Gender.Female
-          : isNeutral
-            ? Gender.Neutral
-            : Gender.Male;
+        const gender = determineGender(text);
 
         return {
           ...state,

@@ -6,7 +6,7 @@ import { Observable, Subscription } from 'rxjs';
 import { IWord, IGenderViewModel } from './words.model';
 import { WordsActions } from './words.actions';
 import { IAppState } from '../store/model';
-import { ILanguage } from '../languages/languages.model';
+import { ILanguage, LanguageCode } from '../languages/languages.model';
 import { forEach } from '@angular/router/src/utils/collection';
 import { Gender } from '../core/core.model';
 
@@ -17,9 +17,11 @@ import { Gender } from '../core/core.model';
 })
 export class WordsComponent implements OnInit, OnDestroy {
   @select(['words', 'list']) readonly words$: Observable<IWord[]>;
+
   languages: ILanguage[];
   genders: IGenderViewModel[];
   subscriptions: Subscription[];
+  isGenderEnabled: boolean;
 
   constructor(
     private store: NgRedux<IAppState>,
@@ -30,8 +32,14 @@ export class WordsComponent implements OnInit, OnDestroy {
         this.languages = [].concat(languages);
       });
 
+    const languageCodeSubscription = store.select<LanguageCode>(['words', 'form', 'word', 'languageCode'])
+      .subscribe(languageCode => {
+        this.isGenderEnabled = this.languages.find(l => l.code === languageCode).gender === true;
+      });
+
     this.subscriptions = [
-      languageSubscription
+      languageSubscription,
+      languageCodeSubscription
     ];
 
     this.genders = [];

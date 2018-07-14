@@ -14,6 +14,7 @@ export interface IWords {
   form: IWordViewModel;
   list: IWord[];
   lastWordId: number;
+  mostRecentWordId: number;
 }
 
 export interface IGenderViewModel {

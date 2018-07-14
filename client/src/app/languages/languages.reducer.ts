@@ -4,7 +4,7 @@ import { Action } from 'redux';
 const InitialState: ILanguages = {
   list: [
     { code: LanguageCode.English, name: 'English' },
-    { code: LanguageCode.Croatian, name: 'Croatian' }
+    { code: LanguageCode.Croatian, name: 'Croatian', gender: true }
   ],
 };
 

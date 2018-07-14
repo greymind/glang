@@ -6,6 +6,7 @@ export enum LanguageCode {
 export interface ILanguage {
   code: LanguageCode;
   name: string;
+  gender?: boolean;
 }
 
 export interface ILanguages {
