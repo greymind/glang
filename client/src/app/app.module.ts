@@ -15,12 +15,15 @@ import { AppComponent } from './app.component';
 import { WordsComponent } from './words/words.component';
 import { CardsComponent } from './cards/cards.component';
 import { CardsActions } from './cards/cards.actions';
+import { WordsActions } from './words/words.actions';
+import { LanguagesComponent } from './languages/languages.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     WordsComponent,
-    CardsComponent
+    CardsComponent,
+    LanguagesComponent
   ],
   imports: [
     RouterModule.forRoot(appRoutes),
@@ -31,13 +34,12 @@ import { CardsActions } from './cards/cards.actions';
     NgReduxModule,
     NgReduxRouterModule.forRoot(),
     NgReduxFormModule,
-    // AnimalModule,
-    // ElephantModule,
-    // LionModule,
-    // FeedbackModule,
     StoreModule,
   ],
-  providers: [CardsActions],
+  providers: [
+    WordsActions,
+    CardsActions
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

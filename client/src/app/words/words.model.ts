@@ -1,15 +1,17 @@
-import { LanguageCode, Gender } from '../core/core.model';
+import { Gender, WordClass } from '../core/core.model';
+import { LanguageCode } from '../languages/languages.model';
 
 export interface IWord {
-  id: number;
+  id?: number;
   text: string;
-  languageCode?: LanguageCode;
+  languageCode: LanguageCode;
   plural?: string;
   gender?: Gender;
+  class?: WordClass;
 }
 
 export interface IWords {
-  form: any;
+  form: IWord;
   list: IWord[];
   lastWordId: number;
 }

@@ -19,7 +19,7 @@ export class CardsComponent implements OnInit, OnDestroy {
   subscriptions: Subscription[];
 
   constructor(
-    private store: NgRedux<IAppState>,
+    store: NgRedux<IAppState>,
     private cardsActions: CardsActions,
   ) {
     const wordsSubscription = store.select<IWord[]>(['words', 'list'])

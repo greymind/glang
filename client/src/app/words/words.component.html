@@ -5,17 +5,26 @@
   </div>
 
   <form [connect]="['words', 'form']">
-    <label for="frontWord">
-      Front word:
-      <input name="frontWord"
+    <label for="text">
+      Text:
+      <input name="text"
              type="text"
              ngControl
              ngModel />
     </label>
 
-    <label for="backWord">
-      Back word:
-      <input name="backWord"
+    <select name="languageCode"
+            ngControl
+            ngModel>
+      <option *ngFor="let language of languages"
+              [value]="language.code">{{ language.name }}</option>
+      <!-- <option [value]="languageCodes.English">English</option>
+      <option [value]="languageCodes.Croatian">Croatian</option> -->
+    </select>
+
+    <label for="plural">
+      Plural:
+      <input name="plural"
              type="text"
              ngControl
              ngModel />
