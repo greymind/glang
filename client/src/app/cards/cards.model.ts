@@ -8,7 +8,8 @@ export interface ICard {
 
 export interface ICards {
   form: any;
-  cards: ICard[];
+  list: ICard[];
+  lastCardId: number;
 }
 
 export interface ICardViewModel {

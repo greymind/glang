@@ -11,7 +11,7 @@ import { IWord } from './words.model';
   styleUrls: ['./words.component.css']
 })
 export class WordsComponent implements OnInit {
-  @select(['words', 'words']) readonly words$: Observable<IWord[]>;
+  @select(['words', 'list']) readonly words$: Observable<IWord[]>;
 
   constructor() { }
 

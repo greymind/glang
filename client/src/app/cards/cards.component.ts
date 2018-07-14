@@ -22,12 +22,12 @@ export class CardsComponent implements OnInit, OnDestroy {
     private store: NgRedux<IAppState>,
     private cardsActions: CardsActions,
   ) {
-    const wordsSubscription = store.select<IWord[]>(['words', 'words'])
+    const wordsSubscription = store.select<IWord[]>(['words', 'list'])
       .subscribe(words => {
         this.words = words;
       });
 
-    const cardsSubscription = store.select<ICard[]>(['cards', 'cards'])
+    const cardsSubscription = store.select<ICard[]>(['cards', 'list'])
       .subscribe(cards => {
         this.cardViewModels = cards
           .map(x => ({
@@ -43,8 +43,6 @@ export class CardsComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    console.log('bye');
-
     this.subscriptions
       .forEach(sub => sub.unsubscribe());
   }
@@ -53,7 +51,6 @@ export class CardsComponent implements OnInit, OnDestroy {
   }
 
   addCard() {
-    console.log('form', this.store.getState().cards.form);
     this.cardsActions.addCard();
   }
 

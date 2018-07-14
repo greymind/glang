@@ -10,5 +10,6 @@ export interface IWord {
 
 export interface IWords {
   form: any;
-  words: IWord[];
+  list: IWord[];
+  lastWordId: number;
 }
