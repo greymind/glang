@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 import { dispatch } from '@angular-redux/store';
 import { FluxStandardAction } from 'flux-standard-action';
-import { IWord } from './words.model';
+import { IWordViewModel } from './words.model';
 import { Gender, WordClass } from '../core/core.model';
 import { LanguageCode } from '../languages/languages.model';
 
-export type WordsAction = FluxStandardAction<IWord>;
+export type WordsAction = FluxStandardAction<IWordViewModel>;
 
 @Injectable()
 export class WordsActions {
@@ -15,11 +15,14 @@ export class WordsActions {
   addWord = (text: string, languageCode: LanguageCode, plural?: string, gender?: Gender, wordClass?: WordClass): WordsAction => ({
     type: WordsActions.AddWord,
     payload: {
-      text,
-      languageCode,
-      plural,
-      gender,
-      class: wordClass
+      word: {
+        text,
+        languageCode,
+        plural,
+        gender,
+        class: wordClass
+      },
+      autoGender: false
     }
   })
 }

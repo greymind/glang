@@ -15,7 +15,6 @@ import { CardsActions } from './cards.actions';
 export class CardsComponent implements OnInit, OnDestroy {
   words: IWord[];
   cardViewModels: ICardViewModel[];
-
   subscriptions: Subscription[];
 
   constructor(
@@ -24,7 +23,7 @@ export class CardsComponent implements OnInit, OnDestroy {
   ) {
     const wordsSubscription = store.select<IWord[]>(['words', 'list'])
       .subscribe(words => {
-        this.words = words;
+        this.words = [].concat(words);
       });
 
     const cardsSubscription = store.select<ICard[]>(['cards', 'list'])

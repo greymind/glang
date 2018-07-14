@@ -11,7 +11,18 @@ export interface IWord {
 }
 
 export interface IWords {
-  form: IWord;
+  form: IWordViewModel;
   list: IWord[];
   lastWordId: number;
+}
+
+export interface IGenderViewModel {
+  code: Gender;
+  name: string;
+}
+
+export interface IWordViewModel {
+  word: IWord;
+  autoGender?: boolean;
+  lastGender?: Gender;
 }

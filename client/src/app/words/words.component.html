@@ -4,7 +4,7 @@
     {{ word.text }}
   </div>
 
-  <form [connect]="['words', 'form']">
+  <form [connect]="['words', 'form', 'word']">
     <label for="text">
       Text:
       <input name="text"
@@ -18,8 +18,13 @@
             ngModel>
       <option *ngFor="let language of languages"
               [value]="language.code">{{ language.name }}</option>
-      <!-- <option [value]="languageCodes.English">English</option>
-      <option [value]="languageCodes.Croatian">Croatian</option> -->
+    </select>
+
+    <select name="gender"
+            ngControl
+            ngModel>
+      <option *ngFor="let gender of genders"
+              [value]="gender.code">{{ gender.name }}</option>
     </select>
 
     <label for="plural">
@@ -29,9 +34,8 @@
              ngControl
              ngModel />
     </label>
-
-    <button (click)="addWord()">Add</button>
-
   </form>
+
+  <button (click)="addWord()">Add</button>
 
 </div>

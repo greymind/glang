@@ -3,10 +3,12 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { select, NgRedux } from '@angular-redux/store';
 import { Observable, Subscription } from 'rxjs';
 
-import { IWord } from './words.model';
+import { IWord, IGenderViewModel } from './words.model';
 import { WordsActions } from './words.actions';
 import { IAppState } from '../store/model';
-import { LanguageCode, ILanguage } from '../languages/languages.model';
+import { ILanguage } from '../languages/languages.model';
+import { forEach } from '@angular/router/src/utils/collection';
+import { Gender } from '../core/core.model';
 
 @Component({
   selector: 'glang-words',
@@ -16,6 +18,7 @@ import { LanguageCode, ILanguage } from '../languages/languages.model';
 export class WordsComponent implements OnInit, OnDestroy {
   @select(['words', 'list']) readonly words$: Observable<IWord[]>;
   languages: ILanguage[];
+  genders: IGenderViewModel[];
   subscriptions: Subscription[];
 
   constructor(
@@ -30,10 +33,26 @@ export class WordsComponent implements OnInit, OnDestroy {
     this.subscriptions = [
       languageSubscription
     ];
+
+    this.genders = [];
+    for (const gender in Gender) {
+      if (Gender.hasOwnProperty(gender)) {
+        const isValue = parseInt(gender, 10) >= 0;
+
+        if (!isValue) {
+          continue;
+        }
+
+        this.genders.push({
+          code: <any>gender,
+          name: Gender[gender]
+        });
+      }
+    }
   }
 
   addWord() {
-    const form = this.store.getState().words.form;
+    const form = this.store.getState().words.form.word;
     this.wordsActions.addWord(form.text, form.languageCode, form.plural, form.gender);
   }
 
