@@ -1,5 +1,13 @@
-<div>
-  Count: {{ count$ | async }}
-  <button (click)="increment()">+</button>
-  <button (click)="decrement()">-</button>
-</div>
+<h1>
+  {{title}}
+</h1>
+<nav>
+  <a routerLink="/words"
+     routerLinkActive="active">Words</a>
+  <a routerLink="/cards"
+     routerLinkActive="active">Cards</a>
+</nav>
+
+<content>
+  <router-outlet></router-outlet>
+</content>

@@ -1,39 +1,40 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { RouterModule } from '@angular/router';
+import { HttpModule } from '@angular/http';
+import { NgReduxModule } from '@angular-redux/store';
+import { NgReduxRouterModule } from '@angular-redux/router';
 
-import { NgReduxModule, NgRedux, DevToolsExtension } from '@angular-redux/store';
-import { rootReducer, IAppState, INITIAL_STATE } from '../store';
-import { CounterActions } from './app.actions';
+import { StoreModule } from './store/module';
 
+import { CounterActions } from './actions';
+
+import { appRoutes } from './routes';
 import { AppComponent } from './app.component';
+import { WordsComponent } from './words/words.component';
+import { CardsComponent } from './cards/cards.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    WordsComponent,
+    CardsComponent
   ],
   imports: [
+    RouterModule.forRoot(appRoutes),
     BrowserModule,
-    NgReduxModule
+    FormsModule,
+    HttpModule,
+    NgReduxModule,
+    NgReduxRouterModule.forRoot(),
+    // AnimalModule,
+    // ElephantModule,
+    // LionModule,
+    // FeedbackModule,
+    StoreModule,
   ],
   providers: [CounterActions],
   bootstrap: [AppComponent]
 })
-export class AppModule {
-  constructor(
-    ngRedux: NgRedux<IAppState>,
-    devTools: DevToolsExtension
-  ) {
-    const storeEnhancers = devTools.isEnabled()
-      ? [devTools.enhancer()]
-      : [];
-
-    // Tell @angular-redux/store about our rootReducer and our initial state.
-    // It will use this to create a redux store for us and wire up all the
-    // events.
-    ngRedux.configureStore(
-      rootReducer,
-      INITIAL_STATE,
-      [],
-      storeEnhancers);
-  }
-}
+export class AppModule { }

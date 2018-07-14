@@ -1,0 +1,5 @@
+<div>
+  <div *ngFor="let card of cards$ | async">
+    {{ card.frontWordId }} -> {{ card.backWordId }}
+  </div>
+</div>
