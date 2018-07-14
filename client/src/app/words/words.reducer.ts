@@ -27,6 +27,7 @@ const InitialState: IWords = {
     plural: 'potatoes'
   }],
   lastWordId: 1,
+  mostRecentWordId: 1
 };
 
 function determineGender(text: string): Gender {

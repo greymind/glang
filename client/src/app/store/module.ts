@@ -1,4 +1,5 @@
 import { NgModule } from '@angular/core';
+import { compose, applyMiddleware, Action } from 'redux';
 
 import { NgReduxModule, NgRedux, DevToolsExtension } from '@angular-redux/store';
 import { NgReduxRouterModule, NgReduxRouter } from '@angular-redux/router';
@@ -8,6 +9,7 @@ import persistState from 'redux-localstorage';
 import { IAppState } from './model';
 import { rootReducer } from './reducers';
 import { RootEpics } from './epics';
+import { createEpicMiddleware } from 'redux-observable';
 
 @NgModule({
   imports: [NgReduxModule, NgReduxRouterModule],
@@ -31,12 +33,16 @@ export class StoreModule {
       storeEnhancers = storeEnhancers.concat(devTools.enhancer());
     }
 
+    const epicMiddleware = createEpicMiddleware<Action<any>, Action<any>, IAppState>();
+
     store.configureStore(
       rootReducer,
       {},
-      [...rootEpics.createEpics()],
+      [epicMiddleware],
       storeEnhancers
     );
+
+    epicMiddleware.run(rootEpics.createEpics());
 
     if (ngReduxRouter) {
       ngReduxRouter.initialize();

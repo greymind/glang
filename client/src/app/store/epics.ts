@@ -1,16 +1,14 @@
 import { Injectable } from '@angular/core';
-
-// import { ANIMAL_TYPES } from '../animals/model';
-// import { AnimalAPIEpics } from '../animals/api/epics';
+import { createEpicMiddleware, combineEpics } from 'redux-observable';
+import { WordsEpics } from '../words/words.epics';
 
 @Injectable()
 export class RootEpics {
-  // constructor(private animalEpics: AnimalAPIEpics) {}
+  constructor(private wordsEpics: WordsEpics) { }
 
   public createEpics() {
-    return [
-      // this.animalEpics.createEpic(ANIMAL_TYPES.ELEPHANT),
-      // this.animalEpics.createEpic(ANIMAL_TYPES.LION),
-    ];
+    return combineEpics(
+      this.wordsEpics.tryAddWord()
+    );
   }
 }

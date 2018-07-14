@@ -17,6 +17,8 @@ import { CardsComponent } from './cards/cards.component';
 import { CardsActions } from './cards/cards.actions';
 import { WordsActions } from './words/words.actions';
 import { LanguagesComponent } from './languages/languages.component';
+import { RootEpics } from './store/epics';
+import { WordsEpics } from './words/words.epics';
 
 @NgModule({
   declarations: [
@@ -37,7 +39,9 @@ import { LanguagesComponent } from './languages/languages.component';
     StoreModule,
   ],
   providers: [
+    RootEpics,
     WordsActions,
+    WordsEpics,
     CardsActions
   ],
   bootstrap: [AppComponent]
