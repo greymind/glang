@@ -15,9 +15,10 @@ export function cardsReducer(state: ICards = InitialState, action: CardsAction):
     case CardsActions.AddCard:
       return {
         ...state,
+        form: {},
         cards: [
           ...state.cards,
-          { id: -1, frontWordId: -1, backWordId: -1 }
+          { id: -1, frontWordId: 1, backWordId: 0 }
         ]
       };
   }

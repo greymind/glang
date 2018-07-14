@@ -4,4 +4,25 @@
     {{ word.text }}
   </div>
 
+  <form [connect]="['words', 'form']">
+    <label for="frontWord">
+      Front word:
+      <input name="frontWord"
+             type="text"
+             ngControl
+             ngModel />
+    </label>
+
+    <label for="backWord">
+      Back word:
+      <input name="backWord"
+             type="text"
+             ngControl
+             ngModel />
+    </label>
+
+    <button (click)="addWord()">Add</button>
+
+  </form>
+
 </div>

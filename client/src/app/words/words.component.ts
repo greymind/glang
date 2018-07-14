@@ -15,6 +15,10 @@ export class WordsComponent implements OnInit {
 
   constructor() { }
 
+  addWord() {
+
+  }
+
   ngOnInit() {
   }
 
