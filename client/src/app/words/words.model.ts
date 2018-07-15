@@ -1,5 +1,11 @@
 import { Gender, WordClass } from '../core/core.model';
-import { LanguageCode } from '../languages/languages.model';
+import { LanguageCode, ISingularForm, IPluralForm } from '../languages/languages.model';
+
+export interface IFormTable {
+  name: string;
+  singular: ISingularForm;
+  plural: IPluralForm;
+}
 
 export interface IWord {
   id?: number;
@@ -8,6 +14,7 @@ export interface IWord {
   plural?: string;
   gender?: Gender;
   class?: WordClass;
+  formTables?: IFormTable[];
 }
 
 export interface IWords {
