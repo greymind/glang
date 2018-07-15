@@ -22,7 +22,6 @@ const InitialState: IWords = {
   }, {
     id: 1,
     languageCode: LanguageCode.English,
-    gender: Gender.None,
     text: 'potato',
     plural: 'potatoes'
   }],

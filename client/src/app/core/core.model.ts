@@ -1,8 +1,7 @@
 export enum Gender {
-  None = 1,
-  Male = 2,
-  Female = 3,
-  Neutral = 4
+  Male = 1,
+  Female = 2,
+  Neutral = 3
 }
 
 export enum WordClass {
