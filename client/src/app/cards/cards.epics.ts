@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import { Epic, ofType, ActionsObservable, StateObservable } from 'redux-observable';
-import { WordsAction, WordsActions } from '../words/words.actions';
+import { ofType, ActionsObservable, StateObservable } from 'redux-observable';
+import { WordsActions } from '../words/words.actions';
 import { IAppState } from '../store/model';
-import { map, delay, withLatestFrom, mergeMap } from 'rxjs/operators';
+import { withLatestFrom, mergeMap } from 'rxjs/operators';
 import { CardsActions, CardsAction } from './cards.actions';
 import { findWord } from '../words/words.helpers';
 
@@ -13,7 +13,7 @@ export class CardsEpics {
     private cardsActions: CardsActions
   ) { }
 
-  addWordsAndCard = (action$: ActionsObservable<CardsAction>, state$: StateObservable<IAppState>) =>
+  addWordsAndCard = (action$: ActionsObservable<CardsAction>) =>
     action$.pipe(
       ofType(CardsActions.AddWordsAndCard),
       mergeMap(action => {

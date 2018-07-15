@@ -15,6 +15,7 @@ import { AppComponent } from './app.component';
 import { WordsComponent } from './words/words.component';
 import { CardsComponent } from './cards/cards.component';
 import { LanguagesComponent } from './languages/languages.component';
+import { AddWordComponent } from './words/add-word/add-word.component';
 
 @NgModule({
   declarations: [
@@ -22,6 +23,7 @@ import { LanguagesComponent } from './languages/languages.component';
     LanguagesComponent,
     WordsComponent,
     CardsComponent,
+    AddWordComponent,
   ],
   imports: [
     RouterModule.forRoot(appRoutes),

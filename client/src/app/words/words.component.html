@@ -5,46 +5,7 @@
   </div>
 
   <form>
-    <form [connect]="['words', 'form', 'word']">
-      <label for="languageCode">
-        Language:
-        <select name="languageCode"
-                ngControl
-                ngModel>
-          <option *ngFor="let language of languages"
-                  [value]="language.code">{{ language.name }}</option>
-        </select>
-      </label>
-
-      <div>
-        <label for="text">
-          Text:
-          <input name="text"
-                 type="text"
-                 ngControl
-                 ngModel />
-        </label>
-
-        <label for="gender">
-          Gender:
-          <select name="gender"
-                  ngControl
-                  ngModel
-                  [disabled]="!isGenderEnabled">
-            <option *ngFor="let gender of genders"
-                    [value]="gender.code">{{ gender.name }}</option>
-          </select>
-        </label>
-
-        <label for="plural">
-          Plural:
-          <input name="plural"
-                 type="text"
-                 ngControl
-                 ngModel />
-        </label>
-      </div>
-    </form>
+    <glang-add-word [path]="['words', 'form', 'word']"></glang-add-word>
 
     <button (click)="addWord()">Add</button>
   </form>

@@ -4,65 +4,8 @@
   </div>
 
   <form>
-    <form [connect]="['cards', 'form', 'frontWord']">
-      <label for="languageCode">
-        Language:
-        <select name="languageCode"
-                ngControl
-                ngModel>
-          <option *ngFor="let language of languages"
-                  [value]="language.code">{{ language.name }}</option>
-        </select>
-      </label>
-
-      <div>
-        <label for="text">
-          Text:
-          <input name="text"
-                 type="text"
-                 ngControl
-                 ngModel />
-        </label>
-
-        <label for="plural">
-          Plural:
-          <input name="plural"
-                 type="text"
-                 ngControl
-                 ngModel />
-        </label>
-      </div>
-    </form>
-
-    <form [connect]="['cards', 'form', 'backWord']">
-      <label for="languageCode">
-        Language:
-        <select name="languageCode"
-                ngControl
-                ngModel>
-          <option *ngFor="let language of languages"
-                  [value]="language.code">{{ language.name }}</option>
-        </select>
-      </label>
-
-      <div>
-        <label for="text">
-          Text:
-          <input name="text"
-                 type="text"
-                 ngControl
-                 ngModel />
-        </label>
-
-        <label for="plural">
-          Plural:
-          <input name="plural"
-                 type="text"
-                 ngControl
-                 ngModel />
-        </label>
-      </div>
-    </form>
+    <glang-add-word [path]="['cards', 'form', 'frontWord']"></glang-add-word>
+    <glang-add-word [path]="['cards', 'form', 'backWord']"></glang-add-word>
 
     <button (click)="addCard()">Add</button>
   </form>
