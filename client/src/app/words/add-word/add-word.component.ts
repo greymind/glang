@@ -3,8 +3,10 @@ import { NgRedux } from '@angular-redux/store';
 import { IAppState } from '../../store/model';
 import { ILanguage, LanguageCode } from '../../languages/languages.model';
 import { Subscription } from 'rxjs';
-import { IGenderViewModel } from '../words.model';
+import { IGenderViewModel, IWordViewModel, IWord } from '../words.model';
 import { Gender } from '../../core/core.model';
+import { determineGender } from '../words.helpers';
+import * as R from 'ramda';
 
 @Component({
   selector: 'glang-add-word',
@@ -16,6 +18,9 @@ export class AddWordComponent implements OnInit, OnDestroy {
 
   languages: ILanguage[];
   genders: IGenderViewModel[];
+
+  autoGender: boolean;
+  lastGender: Gender;
   isGenderEnabled: boolean;
 
   subscriptions: Subscription[];
@@ -23,6 +28,8 @@ export class AddWordComponent implements OnInit, OnDestroy {
   constructor(
     private store: NgRedux<IAppState>,
   ) {
+    this.autoGender = true;
+
     const languageSubscription = store.select<ILanguage[]>(['languages', 'list'])
       .subscribe(languages => {
         this.languages = [].concat(languages);
@@ -58,10 +65,42 @@ export class AddWordComponent implements OnInit, OnDestroy {
     const languageCodeSubscription = this.store.select<LanguageCode>(this.path.concat('languageCode'))
       .subscribe(languageCode => {
         const language = this.languages.find(l => l.code === languageCode);
+
         this.isGenderEnabled = language && language.gender;
+        this.autoGender = true;
+        this.lastGender = null;
       });
 
-    this.subscriptions.push(languageCodeSubscription);
+    const formSubscription = this.store.select<IWord>(this.path)
+      .subscribe(word => {
+        if (this.isGenderEnabled) {
+          const didUserChangeGender = !R.isNil(word.gender)
+            && word.gender !== this.lastGender;
+
+          if (!didUserChangeGender
+            && !R.isNil(word.text)
+            && !R.isEmpty(word.text)
+            && (R.isNil(word.gender) || this.autoGender)) {
+            const gender = determineGender(word.text, word.languageCode);
+
+            if (R.isNil(gender)) {
+              word.gender = null;
+            } else {
+              word.gender = gender;
+
+              this.lastGender = gender;
+              this.autoGender = true;
+            }
+          }
+        } else {
+          word.gender = null;
+        }
+      });
+
+    this.subscriptions.push(
+      languageCodeSubscription,
+      formSubscription
+    );
   }
 
 }

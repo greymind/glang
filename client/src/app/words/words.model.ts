@@ -23,6 +23,4 @@ export interface IGenderViewModel {
 
 export interface IWordViewModel {
   word: IWord;
-  autoGender?: boolean;
-  lastGender?: Gender;
 }

@@ -4,7 +4,7 @@ import { WordsAction, WordsActions } from './words.actions';
 import { LanguageCode } from '../languages/languages.model';
 import { FORM_CHANGED } from '@angular-redux/form';
 import * as R from 'ramda';
-import { findWord } from './words.helpers';
+import { findWord, determineGender } from './words.helpers';
 
 const InitialState: IWords = {
   form: {
@@ -12,7 +12,6 @@ const InitialState: IWords = {
       text: '',
       languageCode: LanguageCode.English
     },
-    autoGender: false,
   },
   list: [{
     id: 0,
@@ -29,19 +28,6 @@ const InitialState: IWords = {
   }],
   lastWordId: 1
 };
-
-function determineGender(text: string): Gender {
-  const isFemale = R.endsWith('a', text);
-  const isNeutral = R.endsWith('o', text) || R.endsWith('e', text);
-
-  const gender = isFemale
-    ? Gender.Female
-    : isNeutral
-      ? Gender.Neutral
-      : Gender.Male;
-
-  return gender;
-}
 
 export function wordsReducer(state: IWords = InitialState, action: WordsAction): IWords {
   switch (action.type) {
@@ -60,7 +46,7 @@ export function wordsReducer(state: IWords = InitialState, action: WordsAction):
 
       if (newWord.languageCode === LanguageCode.Croatian
         && R.isNil(newWord.gender)) {
-        newWord.gender = determineGender(newWord.text);
+        newWord.gender = determineGender(newWord.text, newWord.languageCode);
       }
 
       return {
@@ -77,44 +63,6 @@ export function wordsReducer(state: IWords = InitialState, action: WordsAction):
         ],
         lastWordId: newLastWordId
       };
-
-    case FORM_CHANGED:
-      const payload = action.payload as any;
-      const path = payload.path;
-      const word = payload.value as IWord;
-      const autoGender = state.form.autoGender;
-      const lastGender = state.form.lastGender;
-      const didUserChangeGender = word.gender !== lastGender;
-
-      if (R.equals(path, ['words', 'form', 'word'])
-        && !didUserChangeGender
-        && !R.isEmpty(word.text)
-        && word.languageCode === LanguageCode.Croatian
-        && (R.isNil(word.gender) || autoGender)) {
-        const text = word.text;
-        const gender = determineGender(text);
-
-        return {
-          ...state,
-          form: {
-            ...state.form,
-            word: {
-              ...state.form.word,
-              gender
-            },
-            autoGender: true,
-            lastGender: gender
-          },
-        };
-      } else {
-        return {
-          ...state,
-          form: {
-            ...state.form,
-            autoGender: false,
-          }
-        };
-      }
   }
 
   return state;
