@@ -3,9 +3,9 @@
 </h1>
 <nav>
   <a routerLink="/words"
-     routerLinkActive="active">Words</a>
+     routerLinkActive="active">Words ({{ wordsCount$ | async }})</a>
   <a routerLink="/cards"
-     routerLinkActive="active">Cards</a>
+     routerLinkActive="active">Cards ({{ cardsCount$ | async }})</a>
 </nav>
 
 <content>

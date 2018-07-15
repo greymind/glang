@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { select } from '@angular-redux/store';
 
 @Component({
   selector: 'glang-root',
@@ -7,4 +8,7 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'Greymind Language Learning';
+
+  @select(['words', 'list', 'length']) wordsCount$;
+  @select(['cards', 'list', 'length']) cardsCount$;
 }
