@@ -24,6 +24,11 @@ export interface IGenderViewModel {
   name: string;
 }
 
+export interface IWordClassViewModel {
+  code: WordClass;
+  name: string;
+}
+
 export interface IWordViewModel {
   word: IWord;
 }

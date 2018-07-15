@@ -1,4 +1,5 @@
 <form [connect]="path">
+
   <label for="languageCode">
     Language:
     <select name="languageCode"
@@ -9,34 +10,43 @@
     </select>
   </label>
 
-  <div>
-    <label for="text">
-      Text:
-      <input name="text"
-             type="text"
-             tabindex="1"
-             #text
-             ngControl
-             ngModel />
-    </label>
+  <label for="text">
+    Text:
+    <input name="text"
+           type="text"
+           tabindex="1"
+           #text
+           ngControl
+           ngModel />
+  </label>
 
-    <label for="plural">
-      Plural:
-      <input name="plural"
-             type="text"
-             ngControl
-             ngModel />
-    </label>
+  <label for="plural">
+    Plural:
+    <input name="plural"
+           type="text"
+           ngControl
+           ngModel />
+  </label>
 
-    <label for="gender">
-      Gender:
-      <select name="gender"
-              ngControl
-              ngModel
-              [disabled]="!isGenderEnabled">
-        <option *ngFor="let gender of genders"
-                [value]="gender.code">{{ gender.name }}</option>
-      </select>
-    </label>
-  </div>
+  <label for="gender">
+    Gender:
+    <select name="gender"
+            ngControl
+            ngModel
+            [disabled]="!isGenderEnabled">
+      <option *ngFor="let gender of genders"
+              [value]="gender.code">{{ gender.name }}</option>
+    </select>
+  </label>
+
+  <label for="class">
+    Class:
+    <select name="class"
+            ngControl
+            ngModel>
+      <option *ngFor="let wordClass of wordClasses"
+              [value]="wordClass.code">{{ wordClass.name }}</option>
+    </select>
+  </label>
+
 </form>

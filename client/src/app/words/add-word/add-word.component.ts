@@ -3,8 +3,8 @@ import { NgRedux } from '@angular-redux/store';
 import { IAppState } from '../../store/model';
 import { ILanguage, LanguageCode } from '../../languages/languages.model';
 import { Subscription } from 'rxjs';
-import { IGenderViewModel, IWordViewModel, IWord } from '../words.model';
-import { Gender } from '../../core/core.model';
+import { IGenderViewModel, IWordViewModel, IWord, IWordClassViewModel } from '../words.model';
+import { Gender, WordClass } from '../../core/core.model';
 import { determineGender } from '../words.helpers';
 import * as R from 'ramda';
 
@@ -25,6 +25,8 @@ export class AddWordComponent implements OnInit, OnDestroy {
   lastGender: Gender;
   isGenderEnabled: boolean;
 
+  wordClasses: IWordClassViewModel[];
+
   subscriptions: Subscription[];
 
   constructor(
@@ -41,6 +43,29 @@ export class AddWordComponent implements OnInit, OnDestroy {
       languageSubscription,
     ];
 
+    this.initGenders();
+    this.initWordClasses();
+  }
+
+  initWordClasses() {
+    this.wordClasses = [];
+    for (const wordClass in WordClass) {
+      if (WordClass.hasOwnProperty(wordClass)) {
+        const isValue = parseInt(wordClass, 10) >= 0;
+
+        if (!isValue) {
+          continue;
+        }
+
+        this.wordClasses.push({
+          code: <any>wordClass,
+          name: WordClass[wordClass]
+        });
+      }
+    }
+  }
+
+  initGenders() {
     this.genders = [];
     for (const gender in Gender) {
       if (Gender.hasOwnProperty(gender)) {

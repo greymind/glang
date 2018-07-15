@@ -8,7 +8,7 @@
   <a *ngFor="let word of words"
      routerLink="/words/{{word.id}}"
      class="word">
-    {{ word.languageCode }} {{ word.text }}
+    {{ word.languageCode }}/{{ word.text }}
   </a>
 
 </div>
