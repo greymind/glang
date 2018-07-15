@@ -2,7 +2,10 @@ import { ICards } from './cards.model';
 import { CardsAction, CardsActions } from './cards.actions';
 
 const InitialState: ICards = {
-  form: {},
+  form: {
+    frontWord: {},
+    backWord: {}
+  },
   list: [{
     id: 0,
     frontWordId: 0,
@@ -14,14 +17,23 @@ const InitialState: ICards = {
 export function cardsReducer(state: ICards = InitialState, action: CardsAction): ICards {
   switch (action.type) {
     case CardsActions.AddCard:
+      const newLastCardId = state.lastCardId + 1;
+
       return {
         ...state,
-        form: {},
+        form: {
+          frontWord: {
+            languageCode: state.form.frontWord.languageCode
+          },
+          backWord: {
+            languageCode: state.form.backWord.languageCode
+          }
+        },
         list: [
           ...state.list,
-          { id: state.lastCardId + 1, frontWordId: 1, backWordId: 0 }
+          { id: newLastCardId, frontWordId: action.payload.frontWord.id, backWordId: action.payload.backWord.id }
         ],
-        lastCardId: state.lastCardId + 1
+        lastCardId: newLastCardId
       };
   }
 

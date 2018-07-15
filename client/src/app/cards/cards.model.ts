@@ -7,7 +7,7 @@ export interface ICard {
 }
 
 export interface ICards {
-  form: any;
+  form: ICardViewModel;
   list: ICard[];
   lastCardId: number;
 }

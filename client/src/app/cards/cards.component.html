@@ -3,24 +3,67 @@
     {{ card.frontWord.text }} -> {{ card.backWord.text }}
   </div>
 
-  <form [connect]="['cards', 'form']">
-    <label for="frontWord">
-      Front word:
-      <input name="frontWord"
-             type="text"
-             ngControl
-             ngModel />
-    </label>
+  <form>
+    <form [connect]="['cards', 'form', 'frontWord']">
+      <label for="languageCode">
+        Language:
+        <select name="languageCode"
+                ngControl
+                ngModel>
+          <option *ngFor="let language of languages"
+                  [value]="language.code">{{ language.name }}</option>
+        </select>
+      </label>
 
-    <label for="backWord">
-      Back word:
-      <input name="backWord"
-             type="text"
-             ngControl
-             ngModel />
-    </label>
+      <div>
+        <label for="text">
+          Text:
+          <input name="text"
+                 type="text"
+                 ngControl
+                 ngModel />
+        </label>
+
+        <label for="plural">
+          Plural:
+          <input name="plural"
+                 type="text"
+                 ngControl
+                 ngModel />
+        </label>
+      </div>
+    </form>
+
+    <form [connect]="['cards', 'form', 'backWord']">
+      <label for="languageCode">
+        Language:
+        <select name="languageCode"
+                ngControl
+                ngModel>
+          <option *ngFor="let language of languages"
+                  [value]="language.code">{{ language.name }}</option>
+        </select>
+      </label>
+
+      <div>
+        <label for="text">
+          Text:
+          <input name="text"
+                 type="text"
+                 ngControl
+                 ngModel />
+        </label>
+
+        <label for="plural">
+          Plural:
+          <input name="plural"
+                 type="text"
+                 ngControl
+                 ngModel />
+        </label>
+      </div>
+    </form>
 
     <button (click)="addCard()">Add</button>
-
   </form>
 </div>

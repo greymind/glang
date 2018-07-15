@@ -20,8 +20,9 @@ export class WordsComponent implements OnInit, OnDestroy {
 
   languages: ILanguage[];
   genders: IGenderViewModel[];
-  subscriptions: Subscription[];
   isGenderEnabled: boolean;
+
+  subscriptions: Subscription[];
 
   constructor(
     private store: NgRedux<IAppState>,
@@ -60,8 +61,14 @@ export class WordsComponent implements OnInit, OnDestroy {
   }
 
   addWord() {
-    const form = this.store.getState().words.form.word;
-    this.wordsActions.tryAddWord(form.text, form.languageCode, form.plural, form.gender);
+    const formWord = this.store.getState().words.form.word;
+
+    this.wordsActions.tryAddWord({
+      text: formWord.text,
+      languageCode: formWord.languageCode,
+      plural: formWord.plural,
+      gender: formWord.gender
+    });
   }
 
   ngOnInit() {

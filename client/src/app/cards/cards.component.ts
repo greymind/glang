@@ -5,6 +5,7 @@ import { select, select$, NgRedux } from '@angular-redux/store';
 import { ICardViewModel, ICard } from './cards.model';
 import { IWord } from '../words/words.model';
 import { CardsActions } from './cards.actions';
+import { ILanguage } from '../languages/languages.model';
 
 @Component({
   selector: 'glang-cards',
@@ -13,14 +14,21 @@ import { CardsActions } from './cards.actions';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CardsComponent implements OnInit, OnDestroy {
+  languages: ILanguage[];
   words: IWord[];
   cardViewModels: ICardViewModel[];
+
   subscriptions: Subscription[];
 
   constructor(
-    store: NgRedux<IAppState>,
+    private store: NgRedux<IAppState>,
     private cardsActions: CardsActions,
   ) {
+    const languageSubscription = store.select<ILanguage[]>(['languages', 'list'])
+      .subscribe(languages => {
+        this.languages = [].concat(languages);
+      });
+
     const wordsSubscription = store.select<IWord[]>(['words', 'list'])
       .subscribe(words => {
         this.words = [].concat(words);
@@ -36,6 +44,7 @@ export class CardsComponent implements OnInit, OnDestroy {
       });
 
     this.subscriptions = [
+      languageSubscription,
       wordsSubscription,
       cardsSubscription,
     ];
@@ -50,7 +59,24 @@ export class CardsComponent implements OnInit, OnDestroy {
   }
 
   addCard() {
-    this.cardsActions.addCard();
+    const form = this.store.getState().cards.form;
+
+    const frontWord: IWord = {
+      text: form.frontWord.text,
+      languageCode: form.frontWord.languageCode,
+      plural: form.frontWord.plural,
+    };
+
+    const backWord: IWord = {
+      text: form.backWord.text,
+      languageCode: form.backWord.languageCode,
+      plural: form.backWord.plural,
+    };
+
+    this.cardsActions.addWordsAndCard({
+      frontWord,
+      backWord
+    });
   }
 
 }

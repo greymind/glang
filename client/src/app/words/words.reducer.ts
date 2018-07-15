@@ -4,6 +4,7 @@ import { WordsAction, WordsActions } from './words.actions';
 import { LanguageCode } from '../languages/languages.model';
 import { FORM_CHANGED } from '@angular-redux/form';
 import * as R from 'ramda';
+import { findWord } from './words.helpers';
 
 const InitialState: IWords = {
   form: {
@@ -26,8 +27,7 @@ const InitialState: IWords = {
     text: 'potato',
     plural: 'potatoes'
   }],
-  lastWordId: 1,
-  mostRecentWordId: 1
+  lastWordId: 1
 };
 
 function determineGender(text: string): Gender {
@@ -48,17 +48,11 @@ export function wordsReducer(state: IWords = InitialState, action: WordsAction):
     case WordsActions.AddWord:
       const newWord = action.payload.word;
 
-      const duplicateWord = state.list.find(w => {
-        return w.languageCode === newWord.languageCode
-          && w.text === newWord.text;
-      });
+      const duplicateWord = findWord(state.list, newWord.text, newWord.languageCode);
 
       if (!R.isNil(duplicateWord)) {
         console.warn('Word already exists!');
-        return {
-          ...state,
-          mostRecentWordId: duplicateWord.id
-        };
+        return state;
       }
 
       const newLastWordId = state.lastWordId + 1;
@@ -81,8 +75,7 @@ export function wordsReducer(state: IWords = InitialState, action: WordsAction):
           ...state.list,
           newWord
         ],
-        lastWordId: newLastWordId,
-        mostRecentWordId: newLastWordId
+        lastWordId: newLastWordId
       };
 
     case FORM_CHANGED:

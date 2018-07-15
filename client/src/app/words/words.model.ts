@@ -3,8 +3,8 @@ import { LanguageCode } from '../languages/languages.model';
 
 export interface IWord {
   id?: number;
-  text: string;
-  languageCode: LanguageCode;
+  text?: string;
+  languageCode?: LanguageCode;
   plural?: string;
   gender?: Gender;
   class?: WordClass;
@@ -14,7 +14,6 @@ export interface IWords {
   form: IWordViewModel;
   list: IWord[];
   lastWordId: number;
-  mostRecentWordId: number;
 }
 
 export interface IGenderViewModel {

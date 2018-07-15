@@ -13,7 +13,8 @@ export class RootEpics {
   public createEpics() {
     return combineEpics(
       this.wordsEpics.tryAddWord,
-      this.cardsEpics.addCard
+      this.cardsEpics.addWordsAndCard,
+      this.cardsEpics.addCardWithWords
     );
   }
 }

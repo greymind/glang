@@ -15,10 +15,7 @@ export class WordsEpics {
       ofType(WordsActions.TryAddWord),
       map(action => {
         return this.wordsActions.addWord(
-          action.payload.word.text,
-          action.payload.word.languageCode,
-          '',
-          action.payload.word.gender
+          action.payload.word
         );
       })
     )
