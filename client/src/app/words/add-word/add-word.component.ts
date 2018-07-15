@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, Input, ElementRef, ViewChild } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input, ElementRef, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 import { NgRedux } from '@angular-redux/store';
 import { IAppState } from '../../store/model';
 import { ILanguage, LanguageCode } from '../../languages/languages.model';
@@ -7,17 +7,20 @@ import { IGenderViewModel, IWordViewModel, IWord, IWordClassViewModel } from '..
 import { Gender, WordClass } from '../../core/core.model';
 import { determineGender } from '../words.helpers';
 import * as R from 'ramda';
+import { WordsActions } from '../words.actions';
 
 @Component({
   selector: 'glang-add-word',
   templateUrl: './add-word.component.html',
-  styleUrls: ['./add-word.component.css']
+  styleUrls: ['./add-word.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AddWordComponent implements OnInit, OnDestroy {
   @Input() path: string;
   @Input() focusPath: string;
   @ViewChild('text') textElement: ElementRef;
 
+  word: IWord;
   languages: ILanguage[];
 
   genders: IGenderViewModel[];
@@ -31,6 +34,7 @@ export class AddWordComponent implements OnInit, OnDestroy {
 
   constructor(
     private store: NgRedux<IAppState>,
+    private wordActions: WordsActions,
   ) {
     this.autoGender = true;
 
@@ -47,7 +51,11 @@ export class AddWordComponent implements OnInit, OnDestroy {
     this.initWordClasses();
   }
 
-  initWordClasses() {
+  addFormTable() {
+    this.wordActions.addFormTable(this.word);
+  }
+
+  private initWordClasses() {
     this.wordClasses = [];
     for (const wordClass in WordClass) {
       if (WordClass.hasOwnProperty(wordClass)) {
@@ -65,7 +73,7 @@ export class AddWordComponent implements OnInit, OnDestroy {
     }
   }
 
-  initGenders() {
+  private initGenders() {
     this.genders = [];
     for (const gender in Gender) {
       if (Gender.hasOwnProperty(gender)) {
@@ -100,6 +108,8 @@ export class AddWordComponent implements OnInit, OnDestroy {
 
     const formSubscription = this.store.select<IWord>(this.path)
       .subscribe(word => {
+        this.word = word;
+
         if (this.isGenderEnabled) {
           const didUserChangeGender = !R.isNil(word.gender)
             && word.gender !== this.lastGender;

@@ -1,4 +1,4 @@
-import { IWords, IWord, IWordViewModel } from './words.model';
+import { IWords, IWord, IWordViewModel, IFormTable } from './words.model';
 import { Gender } from '../core/core.model';
 import { WordsAction, WordsActions } from './words.actions';
 import { LanguageCode } from '../languages/languages.model';
@@ -83,6 +83,26 @@ export function wordsReducer(state: IWords = InitialState, action: WordsAction):
           ...state.list.filter(w => w.id !== action.payload.word.id),
           action.payload.word
         ]
+      };
+
+    case WordsActions.AddFormTable:
+      const formTable: IFormTable = {
+        name: '',
+        singular: { me: '', you: '', he: '', she: '', it: '' },
+        plural: { we: '', youAll: '', heAll: '', sheAll: '', itAll: '' }
+      };
+
+      return {
+        ...state,
+        form: {
+          ...state.form,
+          word: {
+            ...state.form.word,
+            formTables: R.isNil(state.form.word.formTables)
+              ? [formTable]
+              : [].concat(...state.form.word.formTables, formTable)
+          }
+        }
       };
   }
 

@@ -11,6 +11,7 @@ export class WordsActions {
   static readonly AddWord = 'Words-AddWord';
   static readonly ViewWord = 'Words-ViewWord';
   static readonly UpdateWord = 'Words-UpdateWord';
+  static readonly AddFormTable = 'Words-AddFormTable';
 
   @dispatch()
   tryAddWord = (word: IWord): WordsAction => ({
@@ -38,6 +39,14 @@ export class WordsActions {
 
   addWord = (word: IWord): WordsAction => ({
     type: WordsActions.AddWord,
+    payload: {
+      word
+    }
+  })
+
+  @dispatch()
+  addFormTable = (word: IWord): WordsAction => ({
+    type: WordsActions.AddFormTable,
     payload: {
       word
     }
