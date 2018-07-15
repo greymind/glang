@@ -84,6 +84,7 @@ export function wordsReducer(state: IWords = InitialState, action: WordsAction):
         lastWordId: newLastWordId,
         mostRecentWordId: newLastWordId
       };
+
     case FORM_CHANGED:
       const payload = action.payload as any;
       const path = payload.path;

@@ -1,26 +1,25 @@
 import { Injectable } from '@angular/core';
-import { Epic, ofType } from 'redux-observable';
+import { Epic, ofType, ActionsObservable, StateObservable } from 'redux-observable';
 import { WordsAction, WordsActions } from './words.actions';
 import { IAppState } from '../store/model';
 import { map, delay } from 'rxjs/operators';
 
 @Injectable()
 export class WordsEpics {
-
   constructor(
     private wordsActions: WordsActions
   ) { }
 
-  tryAddWord(): Epic<WordsAction, WordsAction, IAppState> {
-    return (action$, state) => action$.pipe(
+  tryAddWord = (action$: ActionsObservable<WordsAction>, state$: StateObservable<IAppState>) =>
+    action$.pipe(
       ofType(WordsActions.TryAddWord),
-      map(x => {
+      map(action => {
         return this.wordsActions.addWord(
-          x.payload.word.text,
-          x.payload.word.languageCode,
-          x.payload.word.gender
+          action.payload.word.text,
+          action.payload.word.languageCode,
+          '',
+          action.payload.word.gender
         );
       })
-    );
-  }
+    )
 }

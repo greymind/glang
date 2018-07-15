@@ -13,7 +13,7 @@ export class WordsActions {
   static readonly AddWord = 'Words-AddWord';
 
   @dispatch()
-  tryAddWord = (text: string, languageCode: LanguageCode, gender?: Gender, plural?: string, wordClass?: WordClass): WordsAction => ({
+  tryAddWord = (text: string, languageCode: LanguageCode, plural?: string, gender?: Gender, wordClass?: WordClass): WordsAction => ({
     type: WordsActions.TryAddWord,
     payload: {
       word: {
@@ -27,8 +27,7 @@ export class WordsActions {
     }
   })
 
-  @dispatch()
-  addWord = (text: string, languageCode: LanguageCode, gender: Gender, plural?: string, wordClass?: WordClass): WordsAction => ({
+  addWord = (text: string, languageCode: LanguageCode, plural?: string, gender?: Gender, wordClass?: WordClass): WordsAction => ({
     type: WordsActions.AddWord,
     payload: {
       word: {

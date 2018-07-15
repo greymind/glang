@@ -61,7 +61,7 @@ export class WordsComponent implements OnInit, OnDestroy {
 
   addWord() {
     const form = this.store.getState().words.form.word;
-    this.wordsActions.tryAddWord(form.text, form.languageCode, form.gender, form.plural);
+    this.wordsActions.tryAddWord(form.text, form.languageCode, form.plural, form.gender);
   }
 
   ngOnInit() {

@@ -4,16 +4,28 @@ import { compose, applyMiddleware, Action } from 'redux';
 import { NgReduxModule, NgRedux, DevToolsExtension } from '@angular-redux/store';
 import { NgReduxRouterModule, NgReduxRouter } from '@angular-redux/router';
 import { provideReduxForms } from '@angular-redux/form';
+import { createEpicMiddleware } from 'redux-observable';
+
 import persistState from 'redux-localstorage';
 
 import { IAppState } from './model';
 import { rootReducer } from './reducers';
 import { RootEpics } from './epics';
-import { createEpicMiddleware } from 'redux-observable';
+
+import { WordsActions } from '../words/words.actions';
+import { WordsEpics } from '../words/words.epics';
+import { CardsActions } from '../cards/cards.actions';
+import { CardsEpics } from '../cards/cards.epics';
 
 @NgModule({
   imports: [NgReduxModule, NgReduxRouterModule],
-  providers: [RootEpics],
+  providers: [
+    RootEpics,
+    WordsActions,
+    WordsEpics,
+    CardsActions,
+    CardsEpics
+  ],
 })
 export class StoreModule {
   constructor(
