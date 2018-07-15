@@ -23,6 +23,7 @@ export function cardsReducer(state: ICards = InitialState, action: CardsAction):
   switch (action.type) {
     case CardsActions.AddCard:
       const newLastCardId = state.lastCardId + 1;
+      const newFocusTrigger = (state.focusTrigger || 0) + 1;
 
       return {
         ...state,
@@ -38,7 +39,8 @@ export function cardsReducer(state: ICards = InitialState, action: CardsAction):
           ...state.list,
           { id: newLastCardId, frontWordId: action.payload.frontWord.id, backWordId: action.payload.backWord.id }
         ],
-        lastCardId: newLastCardId
+        lastCardId: newLastCardId,
+        focusTrigger: newFocusTrigger
       };
   }
 

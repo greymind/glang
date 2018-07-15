@@ -9,6 +9,7 @@ import { IAppState } from '../store/model';
 import { ILanguage, LanguageCode } from '../languages/languages.model';
 import { forEach } from '@angular/router/src/utils/collection';
 import { Gender } from '../core/core.model';
+import { reverse } from 'ramda';
 
 @Component({
   selector: 'glang-words',
@@ -16,11 +17,7 @@ import { Gender } from '../core/core.model';
   styleUrls: ['./words.component.css']
 })
 export class WordsComponent implements OnInit, OnDestroy {
-  @select(['words', 'list']) readonly words$: Observable<IWord[]>;
-
-  languages: ILanguage[];
-  genders: IGenderViewModel[];
-  isGenderEnabled: boolean;
+  words: IWord[];
 
   subscriptions: Subscription[];
 
@@ -28,36 +25,18 @@ export class WordsComponent implements OnInit, OnDestroy {
     private store: NgRedux<IAppState>,
     private wordsActions: WordsActions
   ) {
-    const languageSubscription = store.select<ILanguage[]>(['languages', 'list'])
-      .subscribe(languages => {
-        this.languages = [].concat(languages);
-      });
-
-    const languageCodeSubscription = store.select<LanguageCode>(['words', 'form', 'word', 'languageCode'])
-      .subscribe(languageCode => {
-        this.isGenderEnabled = this.languages.find(l => l.code === languageCode).gender === true;
+    const wordsSubscription = store.select<IWord[]>(['words', 'list'])
+      .subscribe(words => {
+        this.words = reverse(words);
       });
 
     this.subscriptions = [
-      languageSubscription,
-      languageCodeSubscription
+      wordsSubscription
     ];
+  }
 
-    this.genders = [];
-    for (const gender in Gender) {
-      if (Gender.hasOwnProperty(gender)) {
-        const isValue = parseInt(gender, 10) >= 0;
-
-        if (!isValue) {
-          continue;
-        }
-
-        this.genders.push({
-          code: <any>gender,
-          name: Gender[gender]
-        });
-      }
-    }
+  onWordClick(word: IWord) {
+    console.log(word);
   }
 
   addWord() {

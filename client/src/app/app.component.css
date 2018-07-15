@@ -1,5 +1,10 @@
+a {
+  margin-right: 5px;
+  margin-left: 5px;
+}
+
 .active {
-  background: #EEE;
+  background: beige;
   border-radius: 3px;
   padding: 5px;
 }

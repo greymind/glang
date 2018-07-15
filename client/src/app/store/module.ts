@@ -36,7 +36,7 @@ export class StoreModule {
   ) {
     let storeEnhancers = [];
 
-    const persist = false;
+    const persist = true;
     if (persist) {
       storeEnhancers = storeEnhancers.concat(persistState());
     }

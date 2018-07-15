@@ -6,6 +6,7 @@ import { ICardViewModel, ICard } from './cards.model';
 import { IWord } from '../words/words.model';
 import { CardsActions } from './cards.actions';
 import { ILanguage } from '../languages/languages.model';
+import { clone, reverse } from 'ramda';
 
 @Component({
   selector: 'glang-cards',
@@ -26,17 +27,17 @@ export class CardsComponent implements OnInit, OnDestroy {
   ) {
     const languageSubscription = store.select<ILanguage[]>(['languages', 'list'])
       .subscribe(languages => {
-        this.languages = [].concat(languages);
+        this.languages = clone(languages);
       });
 
     const wordsSubscription = store.select<IWord[]>(['words', 'list'])
       .subscribe(words => {
-        this.words = [].concat(words);
+        this.words = clone(words);
       });
 
     const cardsSubscription = store.select<ICard[]>(['cards', 'list'])
       .subscribe(cards => {
-        this.cardViewModels = cards
+        this.cardViewModels = reverse(cards)
           .map(x => ({
             frontWord: this.words.find(w => w.id === x.frontWordId),
             backWord: this.words.find(w => w.id === x.backWordId)

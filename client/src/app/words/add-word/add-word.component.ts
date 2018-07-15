@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, Input } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input, ElementRef, ViewChild } from '@angular/core';
 import { NgRedux } from '@angular-redux/store';
 import { IAppState } from '../../store/model';
 import { ILanguage, LanguageCode } from '../../languages/languages.model';
@@ -15,6 +15,8 @@ import * as R from 'ramda';
 })
 export class AddWordComponent implements OnInit, OnDestroy {
   @Input() path: string;
+  @Input() focusPath: string;
+  @ViewChild('text') textElement: ElementRef;
 
   languages: ILanguage[];
   genders: IGenderViewModel[];
@@ -96,6 +98,17 @@ export class AddWordComponent implements OnInit, OnDestroy {
           word.gender = null;
         }
       });
+
+    if (!R.isNil(this.focusPath)) {
+      const focusPathSubscription = this.store.select<number>(this.focusPath)
+        .subscribe(num => {
+          this.textElement.nativeElement.focus();
+        });
+
+      this.subscriptions.push(
+        focusPathSubscription
+      );
+    }
 
     this.subscriptions.push(
       languageCodeSubscription,

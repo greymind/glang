@@ -1,13 +1,14 @@
 <div>
 
-  <div *ngFor="let word of words$ | async">
-    {{ word.text }}
-  </div>
-
   <form>
     <glang-add-word [path]="['words', 'form', 'word']"></glang-add-word>
-
     <button (click)="addWord()">Add</button>
   </form>
+
+  <div *ngFor="let word of words"
+       (click)="onWordClick(word)"
+       class="word">
+    {{ word.languageCode }} {{ word.text }}
+  </div>
 
 </div>

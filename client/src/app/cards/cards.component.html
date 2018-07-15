@@ -1,12 +1,10 @@
 <div>
-  <div *ngFor="let card of cardViewModels">
-    {{ card.frontWord.text }} -> {{ card.backWord.text }}
-  </div>
 
   <form>
     <div class="form-div">
       Front word:
-      <glang-add-word [path]="['cards', 'form', 'frontWord']"></glang-add-word>
+      <glang-add-word [path]="['cards', 'form', 'frontWord']"
+                      [focusPath]="['cards', 'focusTrigger']"></glang-add-word>
     </div>
 
     <div class="form-div">
@@ -14,6 +12,15 @@
       <glang-add-word [path]="['cards', 'form', 'backWord']"></glang-add-word>
     </div>
 
-    <button (click)="addCard()">Add</button>
+    <button (click)="addCard()"
+            tabindex="2">
+      Add
+    </button>
   </form>
+
+  <div *ngFor="let card of cardViewModels"
+       class="card">
+    {{ card.frontWord.languageCode }} {{ card.frontWord.text }} -> {{ card.backWord.languageCode }} {{ card.backWord.text }}
+  </div>
+
 </div>
