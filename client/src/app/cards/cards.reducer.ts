@@ -1,10 +1,15 @@
 import { ICards } from './cards.model';
 import { CardsAction, CardsActions } from './cards.actions';
+import { LanguageCode } from '../languages/languages.model';
 
 const InitialState: ICards = {
   form: {
-    frontWord: {},
-    backWord: {}
+    frontWord: {
+      languageCode: LanguageCode.Croatian
+    },
+    backWord: {
+      languageCode: LanguageCode.English
+    }
   },
   list: [{
     id: 0,

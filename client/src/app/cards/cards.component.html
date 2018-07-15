@@ -4,8 +4,15 @@
   </div>
 
   <form>
-    <glang-add-word [path]="['cards', 'form', 'frontWord']"></glang-add-word>
-    <glang-add-word [path]="['cards', 'form', 'backWord']"></glang-add-word>
+    <div class="form-div">
+      Front word:
+      <glang-add-word [path]="['cards', 'form', 'frontWord']"></glang-add-word>
+    </div>
+
+    <div class="form-div">
+      Back word:
+      <glang-add-word [path]="['cards', 'form', 'backWord']"></glang-add-word>
+    </div>
 
     <button (click)="addCard()">Add</button>
   </form>
