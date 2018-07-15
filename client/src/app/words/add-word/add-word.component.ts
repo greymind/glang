@@ -19,8 +19,8 @@ export class AddWordComponent implements OnInit, OnDestroy {
   @ViewChild('text') textElement: ElementRef;
 
   languages: ILanguage[];
-  genders: IGenderViewModel[];
 
+  genders: IGenderViewModel[];
   autoGender: boolean;
   lastGender: Gender;
   isGenderEnabled: boolean;

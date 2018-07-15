@@ -9,10 +9,28 @@ export type WordsAction = FluxStandardAction<IWordViewModel>;
 export class WordsActions {
   static readonly TryAddWord = 'Words-TryAddWord';
   static readonly AddWord = 'Words-AddWord';
+  static readonly ViewWord = 'Words-ViewWord';
+  static readonly UpdateWord = 'Words-UpdateWord';
 
   @dispatch()
   tryAddWord = (word: IWord): WordsAction => ({
     type: WordsActions.TryAddWord,
+    payload: {
+      word
+    }
+  })
+
+  @dispatch()
+  viewWord = (word: IWord): WordsAction => ({
+    type: WordsActions.ViewWord,
+    payload: {
+      word
+    }
+  })
+
+  @dispatch()
+  updateWord = (word: IWord): WordsAction => ({
+    type: WordsActions.UpdateWord,
     payload: {
       word
     }

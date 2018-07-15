@@ -62,6 +62,28 @@ export function wordsReducer(state: IWords = InitialState, action: WordsAction):
         ],
         lastWordId: newLastWordId
       };
+
+    case WordsActions.ViewWord:
+      return {
+        ...state,
+        form: {
+          ...state.form,
+          editWord: action.payload.word
+        }
+      };
+
+    case WordsActions.UpdateWord:
+      return {
+        ...state,
+        form: {
+          ...state.form,
+          editWord: {}
+        },
+        list: [
+          ...state.list.filter(w => w.id !== action.payload.word.id),
+          action.payload.word
+        ]
+      };
   }
 
   return state;

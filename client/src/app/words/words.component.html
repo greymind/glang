@@ -5,10 +5,10 @@
     <button (click)="addWord()">Add</button>
   </form>
 
-  <div *ngFor="let word of words"
-       (click)="onWordClick(word)"
-       class="word">
+  <a *ngFor="let word of words"
+     routerLink="/words/{{word.id}}"
+     class="word">
     {{ word.languageCode }} {{ word.text }}
-  </div>
+  </a>
 
 </div>

@@ -7,6 +7,12 @@ label {
   display: block;
 }
 
+.card {
+  display: block;
+  text-decoration: none;
+  color: black;
+}
+
 .card:hover {
   background-color: beige;
 }

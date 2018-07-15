@@ -11,7 +11,10 @@ export interface IWord {
 }
 
 export interface IWords {
-  form: IWordViewModel;
+  form: {
+    word: IWord;
+    editWord?: IWord;
+  };
   list: IWord[];
   lastWordId: number;
 }
