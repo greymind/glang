@@ -3,14 +3,6 @@ import { CardsAction, CardsActions } from './cards.actions';
 import { LanguageCode } from '../languages/languages.model';
 
 const InitialState: ICards = {
-  form: {
-    frontWord: {
-      languageCode: LanguageCode.Croatian
-    },
-    backWord: {
-      languageCode: LanguageCode.English
-    }
-  },
   list: [{
     id: 0,
     frontWordId: 0,
@@ -27,14 +19,6 @@ export function cardsReducer(state: ICards = InitialState, action: CardsAction):
 
       return {
         ...state,
-        form: {
-          frontWord: {
-            languageCode: state.form.frontWord.languageCode
-          },
-          backWord: {
-            languageCode: state.form.backWord.languageCode
-          }
-        },
         list: [
           ...state.list,
           { id: newLastCardId, frontWordId: action.payload.frontWord.id, backWordId: action.payload.backWord.id }

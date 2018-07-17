@@ -1,8 +1,11 @@
 <div>
 
   <form>
-    <glang-add-word [path]="['words', 'form', 'word']"></glang-add-word>
-    <button (click)="addWord()">Add</button>
+    <glang-add-word #word></glang-add-word>
+    <button (click)="addWord()"
+            tabindex="1">
+      Add
+    </button>
   </form>
 
   <a *ngFor="let word of words"

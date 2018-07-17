@@ -3,17 +3,16 @@
   <form>
     <div class="form-div">
       Front word:
-      <glang-add-word [path]="['cards', 'form', 'frontWord']"
-                      [focusPath]="['cards', 'focusTrigger']"></glang-add-word>
+      <glang-add-word #frontWord></glang-add-word>
     </div>
 
     <div class="form-div">
       Back word:
-      <glang-add-word [path]="['cards', 'form', 'backWord']"></glang-add-word>
+      <glang-add-word #backWord></glang-add-word>
     </div>
 
     <button (click)="addCard()"
-            tabindex="2">
+            tabindex="1">
       Add
     </button>
   </form>

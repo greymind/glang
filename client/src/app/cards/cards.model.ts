@@ -7,7 +7,6 @@ export interface ICard {
 }
 
 export interface ICards {
-  form: ICardViewModel;
   list: ICard[];
   lastCardId: number;
   focusTrigger?: number;

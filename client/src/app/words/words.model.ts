@@ -18,10 +18,6 @@ export interface IWord {
 }
 
 export interface IWords {
-  form: {
-    word: IWord;
-    editWord?: IWord;
-  };
   list: IWord[];
   lastWordId: number;
 }

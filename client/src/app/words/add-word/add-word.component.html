@@ -1,49 +1,39 @@
-<form [connect]="path">
+<form [formGroup]="wordForm">
 
-  <label for="languageCode">
+  <label>
     Language:
-    <select name="languageCode"
-            ngControl
-            ngModel>
+    <select formControlName="languageCode">
       <option *ngFor="let language of languages"
               [value]="language.code">{{ language.name }}</option>
     </select>
   </label>
 
-  <label for="text">
+  <label>
     Text:
-    <input name="text"
+    <input formControlName="text"
            type="text"
            tabindex="1"
-           #text
-           ngControl
-           ngModel />
+           #text>
   </label>
 
-  <label for="plural">
+  <label>
     Plural:
-    <input name="plural"
-           type="text"
-           ngControl
-           ngModel />
+    <input formControlName="plural"
+           type="text">
   </label>
 
-  <label for="gender">
+  <label>
     Gender:
-    <select name="gender"
-            ngControl
-            ngModel
+    <select formControlName="gender"
             [disabled]="!isGenderEnabled">
       <option *ngFor="let gender of genders"
               [value]="gender.code">{{ gender.name }}</option>
     </select>
   </label>
 
-  <label for="class">
+  <label>
     Class:
-    <select name="class"
-            ngControl
-            ngModel>
+    <select formControlName="class">
       <option *ngFor="let wordClass of wordClasses"
               [value]="wordClass.code">{{ wordClass.name }}</option>
     </select>
@@ -61,5 +51,7 @@
   </ng-template> -->
 
   <button (click)="addFormTable()">Add form table</button>
+
+  <p>Form value: {{ wordForm.value | json }}</p>
 
 </form>

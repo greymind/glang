@@ -9,21 +9,12 @@ export type WordsAction = FluxStandardAction<IWordViewModel>;
 export class WordsActions {
   static readonly TryAddWord = 'Words-TryAddWord';
   static readonly AddWord = 'Words-AddWord';
-  static readonly ViewWord = 'Words-ViewWord';
   static readonly UpdateWord = 'Words-UpdateWord';
-  static readonly AddFormTable = 'Words-AddFormTable';
+  static readonly DeleteWord = 'Words-DeleteWord';
 
   @dispatch()
   tryAddWord = (word: IWord): WordsAction => ({
     type: WordsActions.TryAddWord,
-    payload: {
-      word
-    }
-  })
-
-  @dispatch()
-  viewWord = (word: IWord): WordsAction => ({
-    type: WordsActions.ViewWord,
     payload: {
       word
     }
@@ -37,16 +28,18 @@ export class WordsActions {
     }
   })
 
-  addWord = (word: IWord): WordsAction => ({
-    type: WordsActions.AddWord,
+  @dispatch()
+  deleteWord = (id: number): WordsAction => ({
+    type: WordsActions.DeleteWord,
     payload: {
-      word
+      word: {
+        id
+      }
     }
   })
 
-  @dispatch()
-  addFormTable = (word: IWord): WordsAction => ({
-    type: WordsActions.AddFormTable,
+  addWord = (word: IWord): WordsAction => ({
+    type: WordsActions.AddWord,
     payload: {
       word
     }

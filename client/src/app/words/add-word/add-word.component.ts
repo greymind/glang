@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, Input, ElementRef, ViewChild, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input, ElementRef, ViewChild, ChangeDetectionStrategy, OnChanges } from '@angular/core';
 import { NgRedux } from '@angular-redux/store';
 import { IAppState } from '../../store/model';
 import { ILanguage, LanguageCode } from '../../languages/languages.model';
@@ -8,6 +8,7 @@ import { Gender, WordClass } from '../../core/core.model';
 import { determineGender } from '../words.helpers';
 import * as R from 'ramda';
 import { WordsActions } from '../words.actions';
+import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 
 @Component({
   selector: 'glang-add-word',
@@ -15,13 +16,13 @@ import { WordsActions } from '../words.actions';
   styleUrls: ['./add-word.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class AddWordComponent implements OnInit, OnDestroy {
+export class AddWordComponent implements OnInit, OnDestroy, OnChanges {
   @Input() path: string;
   @Input() focusPath: string;
   @ViewChild('text') textElement: ElementRef;
 
-  word: IWord;
   languages: ILanguage[];
+  lastLanguageCode: LanguageCode;
 
   genders: IGenderViewModel[];
   autoGender: boolean;
@@ -32,9 +33,12 @@ export class AddWordComponent implements OnInit, OnDestroy {
 
   subscriptions: Subscription[];
 
+  wordForm: FormGroup;
+
   constructor(
     private store: NgRedux<IAppState>,
     private wordActions: WordsActions,
+    private formBuilder: FormBuilder
   ) {
     this.autoGender = true;
 
@@ -47,12 +51,52 @@ export class AddWordComponent implements OnInit, OnDestroy {
       languageSubscription,
     ];
 
+    this.createForm();
+
     this.initGenders();
     this.initWordClasses();
   }
 
+  getFormValue() {
+    return <IWord>this.wordForm.value;
+  }
+
+  setFormValue(word: IWord) {
+    this.wordForm.setValue({
+      text: word.text,
+      languageCode: word.languageCode,
+      plural: word.plural || '',
+      gender: word.gender || null,
+      class: word.class || null
+    });
+  }
+
+  createForm() {
+    this.wordForm = this.formBuilder.group({
+      text: ['', Validators.required],
+      plural: '',
+      languageCode: LanguageCode.English,
+      gender: null,
+      class: null,
+    });
+
+    this.lastLanguageCode = this.wordForm.value.languageCode;
+  }
+
+  resetForm() {
+    this.wordForm.reset({
+      languageCode: this.wordForm.value.languageCode || LanguageCode.English
+    });
+
+    this.lastLanguageCode = this.wordForm.value.languageCode;
+  }
+
+  focusText() {
+    this.textElement.nativeElement.focus();
+  }
+
   addFormTable() {
-    this.wordActions.addFormTable(this.word);
+
   }
 
   private initWordClasses() {
@@ -96,19 +140,21 @@ export class AddWordComponent implements OnInit, OnDestroy {
       .forEach(subscription => subscription.unsubscribe());
   }
 
+  ngOnChanges() {
+    this.resetForm();
+  }
+
   ngOnInit() {
-    const languageCodeSubscription = this.store.select<LanguageCode>(this.path.concat('languageCode'))
-      .subscribe(languageCode => {
-        const language = this.languages.find(l => l.code === languageCode);
+    const formSubscription = this.wordForm.valueChanges
+      .subscribe((word: IWord) => {
+        if (word.languageCode !== this.lastLanguageCode) {
+          const language = this.languages.find(l => l.code === word.languageCode);
 
-        this.isGenderEnabled = language && language.gender;
-        this.autoGender = true;
-        this.lastGender = null;
-      });
-
-    const formSubscription = this.store.select<IWord>(this.path)
-      .subscribe(word => {
-        this.word = word;
+          this.isGenderEnabled = language && language.gender;
+          this.autoGender = true;
+          this.lastGender = null;
+          this.lastLanguageCode = word.languageCode;
+        }
 
         if (this.isGenderEnabled) {
           const didUserChangeGender = !R.isNil(word.gender)
@@ -121,34 +167,30 @@ export class AddWordComponent implements OnInit, OnDestroy {
             const gender = determineGender(word.text, word.languageCode);
 
             if (R.isNil(gender)) {
-              word.gender = null;
+              this.setGender(null);
             } else {
-              word.gender = gender;
+              this.setGender(gender);
 
               this.lastGender = gender;
               this.autoGender = true;
             }
           }
         } else {
-          word.gender = null;
+          this.setGender(null);
         }
       });
 
-    if (!R.isNil(this.focusPath)) {
-      const focusPathSubscription = this.store.select<number>(this.focusPath)
-        .subscribe(num => {
-          this.textElement.nativeElement.focus();
-        });
-
-      this.subscriptions.push(
-        focusPathSubscription
-      );
-    }
-
     this.subscriptions.push(
-      languageCodeSubscription,
       formSubscription
     );
+  }
+
+  private setGender(gender: Gender) {
+    if (this.wordForm.value.gender !== gender) {
+      this.wordForm.patchValue({
+        gender: gender
+      });
+    }
   }
 
 }

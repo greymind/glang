@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, AfterViewInit } from '@angular/core';
 
 import { select, NgRedux } from '@angular-redux/store';
 import { Observable, Subscription } from 'rxjs';
@@ -6,17 +6,17 @@ import { Observable, Subscription } from 'rxjs';
 import { IWord, IGenderViewModel } from './words.model';
 import { WordsActions } from './words.actions';
 import { IAppState } from '../store/model';
-import { ILanguage, LanguageCode } from '../languages/languages.model';
-import { forEach } from '@angular/router/src/utils/collection';
-import { Gender } from '../core/core.model';
 import { reverse } from 'ramda';
+import { AddWordComponent } from './add-word/add-word.component';
 
 @Component({
   selector: 'glang-words',
   templateUrl: './words.component.html',
   styleUrls: ['./words.component.css']
 })
-export class WordsComponent implements OnInit, OnDestroy {
+export class WordsComponent implements OnInit, OnDestroy, AfterViewInit {
+  @ViewChild('word') wordRef: AddWordComponent;
+
   words: IWord[];
 
   subscriptions: Subscription[];
@@ -35,22 +35,25 @@ export class WordsComponent implements OnInit, OnDestroy {
     ];
   }
 
-  onWordClick(word: IWord) {
-    console.log(word);
-  }
-
   addWord() {
-    const formWord = this.store.getState().words.form.word;
+    const wordValue = this.wordRef.getFormValue();
 
     this.wordsActions.tryAddWord({
-      text: formWord.text,
-      languageCode: formWord.languageCode,
-      plural: formWord.plural,
-      gender: formWord.gender
+      text: wordValue.text,
+      languageCode: wordValue.languageCode,
+      plural: wordValue.plural,
+      gender: wordValue.gender
     });
+
+    this.wordRef.resetForm();
+    this.wordRef.focusText();
   }
 
   ngOnInit() {
+  }
+
+  ngAfterViewInit() {
+    this.wordRef.focusText();
   }
 
   ngOnDestroy() {

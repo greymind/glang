@@ -7,12 +7,6 @@ import * as R from 'ramda';
 import { findWord, determineGender } from './words.helpers';
 
 const InitialState: IWords = {
-  form: {
-    word: {
-      text: '',
-      languageCode: LanguageCode.English
-    },
-  },
   list: [{
     id: 0,
     languageCode: LanguageCode.Croatian,
@@ -50,12 +44,6 @@ export function wordsReducer(state: IWords = InitialState, action: WordsAction):
 
       return {
         ...state,
-        form: {
-          word: {
-            text: '',
-            languageCode: state.form.word.languageCode
-          }
-        },
         list: [
           ...state.list,
           newWord
@@ -63,46 +51,21 @@ export function wordsReducer(state: IWords = InitialState, action: WordsAction):
         lastWordId: newLastWordId
       };
 
-    case WordsActions.ViewWord:
-      return {
-        ...state,
-        form: {
-          ...state.form,
-          editWord: action.payload.word
-        }
-      };
-
     case WordsActions.UpdateWord:
       return {
         ...state,
-        form: {
-          ...state.form,
-          editWord: {}
-        },
         list: [
           ...state.list.filter(w => w.id !== action.payload.word.id),
           action.payload.word
         ]
       };
 
-    case WordsActions.AddFormTable:
-      const formTable: IFormTable = {
-        name: '',
-        singular: { me: '', you: '', he: '', she: '', it: '' },
-        plural: { we: '', youAll: '', heAll: '', sheAll: '', itAll: '' }
-      };
-
+    case WordsActions.DeleteWord:
       return {
         ...state,
-        form: {
-          ...state.form,
-          word: {
-            ...state.form.word,
-            formTables: R.isNil(state.form.word.formTables)
-              ? [formTable]
-              : [].concat(...state.form.word.formTables, formTable)
-          }
-        }
+        list: [
+          ...state.list.filter(w => w.id !== action.payload.word.id)
+        ]
       };
   }
 

@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectionStrategy, ViewChild, AfterViewInit } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
 import { IAppState } from '../store/model';
 import { select, select$, NgRedux } from '@angular-redux/store';
@@ -7,6 +7,7 @@ import { IWord } from '../words/words.model';
 import { CardsActions } from './cards.actions';
 import { ILanguage } from '../languages/languages.model';
 import { clone, reverse } from 'ramda';
+import { AddWordComponent } from '../words/add-word/add-word.component';
 
 @Component({
   selector: 'glang-cards',
@@ -14,7 +15,10 @@ import { clone, reverse } from 'ramda';
   styleUrls: ['./cards.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class CardsComponent implements OnInit, OnDestroy {
+export class CardsComponent implements OnInit, OnDestroy, AfterViewInit {
+  @ViewChild('frontWord') frontWordRef: AddWordComponent;
+  @ViewChild('backWord') backWordRef: AddWordComponent;
+
   languages: ILanguage[];
   words: IWord[];
   cardViewModels: ICardViewModel[];
@@ -59,25 +63,34 @@ export class CardsComponent implements OnInit, OnDestroy {
   ngOnInit() {
   }
 
+  ngAfterViewInit() {
+    this.frontWordRef.focusText();
+  }
+
   addCard() {
-    const form = this.store.getState().cards.form;
+    const frontWordValue = this.frontWordRef.getFormValue();
+    const backWordValue = this.backWordRef.getFormValue();
 
     const frontWord: IWord = {
-      text: form.frontWord.text,
-      languageCode: form.frontWord.languageCode,
-      plural: form.frontWord.plural,
+      text: frontWordValue.text,
+      languageCode: frontWordValue.languageCode,
+      plural: frontWordValue.plural,
     };
 
     const backWord: IWord = {
-      text: form.backWord.text,
-      languageCode: form.backWord.languageCode,
-      plural: form.backWord.plural,
+      text: backWordValue.text,
+      languageCode: backWordValue.languageCode,
+      plural: backWordValue.plural,
     };
 
     this.cardsActions.addWordsAndCard({
       frontWord,
       backWord
     });
+
+    this.frontWordRef.resetForm();
+    this.backWordRef.resetForm();
+    this.frontWordRef.focusText();
   }
 
 }

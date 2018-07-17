@@ -1,8 +1,17 @@
-<div *ngIf="word">
+<div>
 
   <form>
-    <glang-add-word [path]="['words', 'form', 'editWord']"></glang-add-word>
-    <button (click)="updateWord()">Update</button>
+    <glang-add-word #word></glang-add-word>
+
+    <button (click)="updateWord()"
+            tabindex="1">
+      Update
+    </button>
+
+    <button (click)="deleteWord()"
+            tabindex="1">
+      Delete
+    </button>
   </form>
 
 </div>

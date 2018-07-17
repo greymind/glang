@@ -1,21 +1,23 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { Component, OnInit, OnDestroy, ViewChild, AfterViewInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common';
 import { NgRedux } from '@angular-redux/store';
 import { IAppState } from '../../store/model';
-import { IWord, IGenderViewModel } from '../words.model';
+import { IWord } from '../words.model';
 import { Subscription } from 'rxjs';
 import { WordsActions } from '../words.actions';
-import { ILanguage } from '../../languages/languages.model';
-import { Gender } from '../../core/core.model';
+import { AddWordComponent } from '../add-word/add-word.component';
+import * as R from 'ramda';
 
 @Component({
   selector: 'glang-edit-word',
   templateUrl: './edit-word.component.html',
   styleUrls: ['./edit-word.component.css']
 })
-export class EditWordComponent implements OnInit, OnDestroy {
-  word: IWord;
+export class EditWordComponent implements OnInit, OnDestroy, AfterViewInit {
+  @ViewChild('word') wordRef: AddWordComponent;
+
+  id: number;
 
   subscriptions: Subscription[];
 
@@ -24,24 +26,40 @@ export class EditWordComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private location: Location,
     private wordActions: WordsActions,
+    private router: Router,
   ) {
     this.subscriptions = [];
   }
 
   updateWord() {
-    const word = this.store.getState().words.form.editWord;
+    const word = <IWord>this.wordRef.getFormValue();
+    word.id = this.id;
+
     this.wordActions.updateWord(word);
   }
 
+  deleteWord() {
+    this.wordActions.deleteWord(this.id);
+    this.router.navigateByUrl('/words');
+  }
+
   ngOnInit() {
-    const id = +this.route.snapshot.paramMap.get('id');
+    this.id = +this.route.snapshot.paramMap.get('id');
+  }
+
+  ngAfterViewInit() {
+
     const wordSubscription = this.store.select<IWord[]>(['words', 'list'])
       .subscribe(words => {
-        this.word = words.find(w => w.id === id);
-        this.wordActions.viewWord(this.word);
+        const word = words.find(w => w.id === this.id);
+        if (!R.isNil(word)) {
+          this.wordRef.setFormValue(word);
+        }
       });
 
     this.subscriptions.push(wordSubscription);
+
+    this.wordRef.focusText();
   }
 
   ngOnDestroy() {
