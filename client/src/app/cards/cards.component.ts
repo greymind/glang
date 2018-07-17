@@ -68,20 +68,8 @@ export class CardsComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   addCard() {
-    const frontWordValue = this.frontWordRef.getFormValue();
-    const backWordValue = this.backWordRef.getFormValue();
-
-    const frontWord: IWord = {
-      text: frontWordValue.text,
-      languageCode: frontWordValue.languageCode,
-      plural: frontWordValue.plural,
-    };
-
-    const backWord: IWord = {
-      text: backWordValue.text,
-      languageCode: backWordValue.languageCode,
-      plural: backWordValue.plural,
-    };
+    const frontWord = this.frontWordRef.getFormValue();
+    const backWord = this.backWordRef.getFormValue();
 
     this.cardsActions.addWordsAndCard({
       frontWord,

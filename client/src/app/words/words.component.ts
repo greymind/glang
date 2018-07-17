@@ -36,16 +36,9 @@ export class WordsComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   addWord() {
-    const wordValue = this.wordRef.getFormValue();
+    const word = this.wordRef.getFormValue();
 
-    this.wordsActions.tryAddWord({
-      text: wordValue.text,
-      languageCode: wordValue.languageCode,
-      plural: wordValue.plural,
-      gender: wordValue.gender,
-      class: wordValue.class,
-      formTables: wordValue.formTables
-    });
+    this.wordsActions.tryAddWord(word);
 
     this.wordRef.resetForm();
     this.wordRef.focusText();

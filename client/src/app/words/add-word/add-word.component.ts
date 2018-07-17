@@ -124,6 +124,8 @@ export class AddWordComponent implements OnInit, OnDestroy, OnChanges {
       languageCode: this.wordForm.value.languageCode || LanguageCode.English
     });
 
+    this.wordForm.setControl('formTables', this.formBuilder.array([]));
+
     this.lastLanguageCode = this.wordForm.value.languageCode;
   }
 
