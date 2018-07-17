@@ -3,12 +3,12 @@ import { NgRedux } from '@angular-redux/store';
 import { IAppState } from '../../store/model';
 import { ILanguage, LanguageCode } from '../../languages/languages.model';
 import { Subscription } from 'rxjs';
-import { IGenderViewModel, IWordViewModel, IWord, IWordClassViewModel } from '../words.model';
+import { IGenderViewModel, IWord, IWordClassViewModel } from '../words.model';
 import { Gender, WordClass } from '../../core/core.model';
 import { determineGender } from '../words.helpers';
 import * as R from 'ramda';
 import { WordsActions } from '../words.actions';
-import { FormGroup, FormControl, FormBuilder, Validators, FormArray } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators, FormArray } from '@angular/forms';
 
 @Component({
   selector: 'glang-add-word',
@@ -38,7 +38,7 @@ export class AddWordComponent implements OnInit, OnDestroy, OnChanges {
   constructor(
     private store: NgRedux<IAppState>,
     private wordActions: WordsActions,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
   ) {
     this.autoGender = true;
 
