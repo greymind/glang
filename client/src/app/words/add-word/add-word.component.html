@@ -39,6 +39,96 @@
     </select>
   </label>
 
+  <div formArrayName="formTables">
+    <div *ngFor="let formTable of formTables.controls; let i=index"
+         [formGroupName]="i"
+         class="formTable">
+
+      <label>
+        Name:
+        <input formControlName="name"
+               type="text">
+      </label>
+
+      <div class="forms">
+
+        <div class="singular"
+             formGroupName="singular">
+
+          <label>
+            Me:
+            <input formControlName="me"
+                   type="text">
+          </label>
+
+          <label>
+            You:
+            <input formControlName="you"
+                   type="text">
+          </label>
+
+          <label>
+            He:
+            <input formControlName="he"
+                   type="text">
+          </label>
+
+          <label>
+            She:
+            <input formControlName="she"
+                   type="text">
+          </label>
+
+          <label>
+            It:
+            <input formControlName="it"
+                   type="text">
+          </label>
+
+        </div>
+
+        <div class="plural"
+             formGroupName="plural">
+
+          <label>
+            We:
+            <input formControlName="we"
+                   type="text">
+          </label>
+
+          <label>
+            YouAll:
+            <input formControlName="youAll"
+                   type="text">
+          </label>
+
+          <label>
+            HeAll:
+            <input formControlName="heAll"
+                   type="text">
+          </label>
+
+          <label>
+            SheAll:
+            <input formControlName="sheAll"
+                   type="text">
+          </label>
+
+          <label>
+            ItAll:
+            <input formControlName="itAll"
+                   type="text">
+          </label>
+
+        </div>
+
+      </div>
+
+      <button (click)="removeFormTable(i)">Remove</button>
+
+    </div>
+  </div>
+
   <!-- <ng-template connectArray
                let-index
                connectArrayOf="formTables">

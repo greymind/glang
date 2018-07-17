@@ -42,7 +42,9 @@ export class WordsComponent implements OnInit, OnDestroy, AfterViewInit {
       text: wordValue.text,
       languageCode: wordValue.languageCode,
       plural: wordValue.plural,
-      gender: wordValue.gender
+      gender: wordValue.gender,
+      class: wordValue.class,
+      formTables: wordValue.formTables
     });
 
     this.wordRef.resetForm();

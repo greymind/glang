@@ -8,7 +8,7 @@ import { Gender, WordClass } from '../../core/core.model';
 import { determineGender } from '../words.helpers';
 import * as R from 'ramda';
 import { WordsActions } from '../words.actions';
-import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
+import { FormGroup, FormControl, FormBuilder, Validators, FormArray } from '@angular/forms';
 
 @Component({
   selector: 'glang-add-word',
@@ -58,29 +58,65 @@ export class AddWordComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   getFormValue() {
-    return <IWord>this.wordForm.value;
+    const value = this.wordForm.value;
+
+    return <IWord>{
+      text: value.text,
+      languageCode: value.languageCode,
+      plural: value.plural || null,
+      gender: value.gender || null,
+      class: value.class || null,
+      formTables: value.formTables || null
+    };
   }
 
   setFormValue(word: IWord) {
-    this.wordForm.setValue({
+    this.wordForm.reset({
       text: word.text,
       languageCode: word.languageCode,
       plural: word.plural || '',
       gender: word.gender || null,
-      class: word.class || null
+      class: word.class || null,
     });
+
+    this.wordForm.setControl('formTables',
+      this.formBuilder.array(
+        (word.formTables || []).map(ft => this.formBuilder.group({
+          name: ft.name,
+          singular: this.formBuilder.group(ft.singular),
+          plural: this.formBuilder.group(ft.plural)
+        }))
+      )
+    );
+  }
+
+  get formTables(): FormArray {
+    return this.wordForm.get('formTables') as FormArray;
   }
 
   createForm() {
     this.wordForm = this.formBuilder.group({
       text: ['', Validators.required],
-      plural: '',
       languageCode: LanguageCode.English,
+      plural: '',
       gender: null,
       class: null,
+      formTables: this.formBuilder.array([])
     });
 
     this.lastLanguageCode = this.wordForm.value.languageCode;
+  }
+
+  createFormTable() {
+    return this.formBuilder.group({
+      name: ['', Validators.required],
+      singular: this.formBuilder.group({
+        me: '', you: '', he: '', she: '', it: ''
+      }),
+      plural: this.formBuilder.group({
+        we: '', youAll: '', heAll: '', sheAll: '', itAll: ''
+      })
+    });
   }
 
   resetForm() {
@@ -96,7 +132,11 @@ export class AddWordComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   addFormTable() {
+    this.formTables.push(this.createFormTable());
+  }
 
+  removeFormTable(i: number) {
+    this.formTables.removeAt(i);
   }
 
   private initWordClasses() {
